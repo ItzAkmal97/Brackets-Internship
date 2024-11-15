@@ -4,6 +4,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import RootLayout from "./pages/RootLayout";
 import Error from "./pages/Error";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +16,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/About", element: <About /> },
         { path: "/Contact", element: <Contact /> },
+        { path: "/Dashboard", element: <Dashboard /> },
       ],
     },
   ]);

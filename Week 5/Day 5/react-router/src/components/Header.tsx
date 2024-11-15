@@ -29,6 +29,14 @@ function Header() {
               Contact
             </NavLink>
           </li>
+          <li className="hover:text-yellow-400 transition duration-400">
+            <NavLink
+              to={"/Dashboard"}
+              className={({ isActive }) => (isActive ? "text-yellow-400" : "")}
+            >
+              Dashboard
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

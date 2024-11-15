@@ -1,0 +1,7 @@
+The HTTPS (HyperText Transfer Protocol Secure), enhances security even beyond that of HTTP by using encryption, authentication, and data integrity.
+
+Encryption: HTTPS uses the protocol suite of SSL/TLS (Secure Sockets Layer/Transport Layer Security), which encrypts data being transmitted between a client, such as a web browser, and a server. This encryption ensures that hackers can't intercept sensitive information, such as login credentials or credit card information, being transmitted across the network. Even if intercepted, it will just appear as nonsensical gibberish to anyone who's not authorized to decrypt it.
+
+Authentication: HTTPS ensures that the client is in fact communicating with the correct server through the use of digital certificates, which are distributed by trusted Certificate Authorities. Certificates help in verifying the identity of the server, which, thereafter helps curb man-in-the-middle attacks where the attacker may masquerade as the legitimate server.
+
+Data Integrity: HTTPS will ensure that the information passed through between the client and server has not been altered or modified while in transit. Any unauthorized modification to the data would be detected, which helps to prevent attacks that could change sensitive information, such as prices or account numbers.

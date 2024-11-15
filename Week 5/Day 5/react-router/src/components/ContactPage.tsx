@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Toast from "./Toast";
-import { useState, useCallback} from "react";
+import { useState, useCallback } from "react";
 
 type formData = {
   firstName: string;
@@ -14,17 +14,20 @@ type formData = {
   message: string;
 };
 
-
-
 function ContactPage() {
-
   const [showToast, setShowToast] = useState<boolean>(false);
 
   const schema = yup.object().shape({
     firstName: yup.string().required(),
     lastName: yup.string().min(2).required(),
     company: yup.string().required(),
-    email: yup.string().email().required(),
+    email: yup
+      .string()
+      .required("Email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Invalid email address"
+      ),
     areaCode: yup
       .string()
       .required()
@@ -56,9 +59,7 @@ function ContactPage() {
         <Toast
           message="Form submitted successfully!"
           isVisible={showToast}
-          onClose={() => setShowToast(false)
-            
-          }
+          onClose={() => setShowToast(false)}
         />
         <h1 className="text-5xl text-center my-24">Contact Us</h1>
         <form
@@ -129,6 +130,7 @@ function ContactPage() {
                 <input
                   className="w-full h-10 px-3 rounded bg-white border border-gray-300"
                   type="email"
+                  required
                   placeholder="example@email.com"
                   {...register("email")}
                 />

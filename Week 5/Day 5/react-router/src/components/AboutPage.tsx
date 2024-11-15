@@ -106,28 +106,26 @@ function AboutPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-800">
-        <div className="bg-neutral-700/50 backdrop-blur-lg rounded-xl p-8 animate-pulse">
-          <div className="text-3xl font-bold text-white">Loading...</div>
-        </div>
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-stone-700 border-t-transparent"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-800">
-        <div className="bg-red-500/10 backdrop-blur-lg rounded-xl p-8">
-          <div className="text-3xl font-bold text-white">{error}</div>
+      <div className="flex justify-center">
+        <div className="rounded-lg bg-red-50 p-4 text-red-500">
+          <p className="text-lg font-medium">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 xl:px-0">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-white text-center mb-12">Our Team</h1>
+        <h1 className="text-4xl font-bold text-stone-600 text-center mb-12">Our Team</h1>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {users.map((user) => (
             <div

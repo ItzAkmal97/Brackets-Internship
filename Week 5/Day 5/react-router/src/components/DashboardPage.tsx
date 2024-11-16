@@ -20,7 +20,7 @@ function DashboardPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://randomuser.me/api/?seed=myfixedseed&results=20");
+        const response = await fetch("https://randomuser.me/api/?page=1&results=10");
 
         if (!response.ok) {
           throw new Error("Failed to fetch Data");

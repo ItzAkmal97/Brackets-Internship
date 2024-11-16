@@ -38,10 +38,30 @@ function DashboardPage() {
     fetchUsers();
   }, []);
 
+  if(isLoading) {
+    return (
+      <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-bold text-stone-700 text-center mb-12">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  if(error) {
+    return (
+      <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-bold text-stone-700 text-center mb-12">Error: {error}</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-white text-center mb-12">Our Team</h1>
+        <h1 className="text-4xl font-bold text-stone-700 text-center mb-12">Our Team</h1>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {users.map((user) => (
             <div

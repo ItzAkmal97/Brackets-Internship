@@ -102,7 +102,7 @@ function ContactPage() {
                     Last Name
                   </label>
                   {errors.lastName && (
-                    <p className="text-red-500">{errors.lastName.message}</p>
+                    <p className="text-red-500">Last name must be equal or greater than 2 characters</p>
                   )}
                 </div>
               </div>

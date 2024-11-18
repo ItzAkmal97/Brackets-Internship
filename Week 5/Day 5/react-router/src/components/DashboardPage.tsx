@@ -50,7 +50,11 @@ function DashboardPage() {
   const filteredUsers = users.filter((user) => {
     if (filter === "male") return user.gender === "male";
     if (filter === "female") return user.gender === "female";
-    if (filter === "age") return user.dob.age < 10;
+    if (filter === "age") {
+      return user.dob.age < 40;
+    } else if (filter === "age20") {
+      return user.dob.age < 20;
+    }
     return "all";
   });
 
@@ -101,6 +105,7 @@ function DashboardPage() {
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="age">Age lower than 40</option>
+              <option value="age20">Age lower than 20</option>
             </select>
           </div>
           <hr className="border-stone-700" />

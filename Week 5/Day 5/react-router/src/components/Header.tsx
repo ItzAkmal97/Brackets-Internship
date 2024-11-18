@@ -6,7 +6,7 @@ function Header() {
     <header className="bg-stone-700 p-6">
       <nav className="relative text-stone-300 max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl">React Router</h1>
+          <h1 className="text-3xl">Users Management</h1>
           
           {/* Hamburger Menu */}
           <label htmlFor="nav-toggle" className="cursor-pointer lg:hidden">

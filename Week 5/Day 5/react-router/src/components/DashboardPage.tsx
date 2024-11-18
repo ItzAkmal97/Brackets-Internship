@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Pagination from "./Pagination";
 
 type UserData = {
   login: { uuid: string };
@@ -6,8 +7,8 @@ type UserData = {
   name: { title: string; first: string; last: string };
   email: string;
   dob: { date: string; age: number };
-  phone: number;
-  cell: number;
+  phone: string;
+  cell: string;
   picture: { large: string; medium: string; thumbnail: string };
   nat: string;
 };
@@ -17,20 +18,22 @@ function DashboardPage() {
   const [error, setError] = useState<string | null>("");
   const [users, setUsers] = useState<UserData[]>([]);
   const [filter, setFilter] = useState<string>("all");
+  const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const usersPerPage = 10;
 
   useEffect(() => {
     const fetchUsers = async () => {
+      const URL = `https://randomuser.me/api/?seed=myfixedseed&page=${currentPage}&results=100`;
       try {
-        const response = await fetch(
-          "https://randomuser.me/api/?seed=myfixedseed&results=20"
-        );
+        const response = await fetch(URL);
 
         if (!response.ok) {
           throw new Error("Failed to fetch Data");
         }
 
         const resData = await response.json();
-        setUsers(resData.results);
+        setUsers(resData.results || []);
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "Something went wrong"
@@ -41,22 +44,53 @@ function DashboardPage() {
     };
 
     fetchUsers();
-  }, []);
+  }, [currentPage]);
 
   const handleFilterData = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value);
+    setCurrentPage(1);
   };
 
-  const filteredUsers = users.filter((user) => {
+  const handleSearchData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const searchedUsers = users.filter((user) =>
+    user.name.first.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredUsers = searchedUsers.filter((user) => {
     if (filter === "male") return user.gender === "male";
     if (filter === "female") return user.gender === "female";
-    if (filter === "age") {
-      return user.dob.age < 40;
-    } else if (filter === "age20") {
-      return user.dob.age < 20;
-    }
-    return "all";
+    if (filter === "age") return user.dob.age < 40;
+    if (filter === "age20") return user.dob.age < 20;
+    if (filter === "ageMale")
+      return user.dob.age < 40 && user.gender === "male";
+    return true;
   });
+
+  const totalUsers = filteredUsers.length;
+  const totalPages = Math.ceil(totalUsers / usersPerPage);
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const displayedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+    } else {
+      return;
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   if (isLoading) {
     return (
@@ -85,35 +119,46 @@ function DashboardPage() {
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 xl:px-0">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-stone-700 text-center mb-12">
+        <h1 className="text-4xl font-bold text-stone-600 text-center mb-12">
           Our Team
         </h1>
         <div className="space-y-4 mb-8">
           <hr className="border-stone-700" />
           <div className="flex space-x-2">
             <input
-              className="w-1/4 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-stone-700 transition-colors duration-300"
+              className="w-1/2 md:w-1/4 px-4 py-4 rounded-lg border text-gray-50 bg-stone-600 border-gray-200 focus:outline-none focus:border-stone-700 transition-colors duration-300"
               placeholder="Search"
               type="text"
+              value={search}
+              onChange={handleSearchData}
             />
+
             <select
               value={filter}
               onChange={handleFilterData}
-              className="max-w-sm px-4 py-2 cursor-pointer rounded-lg border border-gray-200 focus:outline-none focus:border-stone-700 transition-colors duration-300 "
+              className="w-1/2 md:w-1/5 px-4 py-4 cursor-pointer rounded-lg border bg-stone-600 text-gray-50 border-gray-200 focus:outline-none focus:border-stone-700 transition-colors duration-300 "
             >
               <option value="all">All</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="age">Age lower than 40</option>
+              <option value="ageMale">Age lower than 40 and Male</option>
               <option value="age20">Age lower than 20</option>
             </select>
           </div>
           <hr className="border-stone-700" />
         </div>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onPageChange={handlePageChange}
+        />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
+          {displayedUsers.length > 0 ? (
+            displayedUsers.map((user) => (
               <div
                 key={user.login.uuid}
                 className="group relative bg-neutral-700/30 backdrop-blur-lg rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-neutral-700/50"
@@ -122,11 +167,11 @@ function DashboardPage() {
 
                 <div className="relative z-10">
                   {/* Profile Image */}
-                  <div className="w-full h-48 overflow-hidden">
+                  <div className="w-full flex justify-center pt-4 overflow-hidden">
                     <img
                       src={user.picture.large}
                       alt={`${user.name.first} ${user.name.last}`}
-                      className="w-full h-full object-cover object-center"
+                      className="object-cover object-center rounded-full"
                     />
                   </div>
 
@@ -212,10 +257,13 @@ function DashboardPage() {
           ) : (
             <div className="flex flex-col items-center justify-center space-y-6">
               <p className="text-4xl font-bold text-stone-700 text-center">
-                No users available for the {filter} filter
+                No users available for the current filter or search
               </p>
               <button
-                onClick={() => setFilter("all")}
+                onClick={() => {
+                  setFilter("all");
+                  setSearch("");
+                }}
                 className="bg-stone-700 hover:bg-stone-800 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Reset Filter
@@ -223,6 +271,13 @@ function DashboardPage() {
             </div>
           )}
         </div>
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

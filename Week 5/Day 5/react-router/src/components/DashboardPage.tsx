@@ -44,7 +44,7 @@ function DashboardPage() {
     };
 
     fetchUsers();
-  }, [currentPage]);
+  },[currentPage]);
 
   const handleFilterData = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value);
@@ -70,8 +70,8 @@ function DashboardPage() {
     return true;
   });
 
-  const totalUsers = filteredUsers.length;
-  const totalPages = Math.ceil(totalUsers / usersPerPage);
+  //Pagination logic
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
   const startIndex = (currentPage - 1) * usersPerPage;
   const endIndex = startIndex + usersPerPage;
   const displayedUsers = filteredUsers.slice(startIndex, endIndex);

@@ -13,27 +13,21 @@ function Pagination({
   onPrevious,
   onNext,
 }: PagProps) {
-  // Generate page numbers to display
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
-    const totalVisible = 7; // Total visible items including ellipses
+    const totalVisible = 5; 
 
     if (totalPages <= totalVisible) {
-      // If pages are less than or equal to total visible items, show all
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
-      // Fill remaining slots with empty strings to maintain consistent length
       while (pages.length < totalVisible) {
         pages.push("");
       }
     } else {
-      // Complex pagination
       if (currentPage <= 3) {
-        // Near the start
         pages.push(1, 2, 3, 4, "...", totalPages - 1, totalPages);
       } else if (currentPage >= totalPages - 2) {
-        // Near the end
         pages.push(
           1,
           2,
@@ -44,7 +38,6 @@ function Pagination({
           totalPages
         );
       } else {
-        // Middle - show current page, one before, and one after
         pages.push(
           1,
           "...",
@@ -112,13 +105,10 @@ function Pagination({
               </svg>
             </button>
 
-            {getPageNumbers().map((page, index) => {
+            {getPageNumbers().map((page) => {
               if (page === "") {
                 return (
-                  <span
-                    key={index}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 opacity-0"
-                  >
+                  <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 opacity-0">
                     0
                   </span>
                 );
@@ -126,7 +116,6 @@ function Pagination({
 
               return typeof page === "number" ? (
                 <button
-                  key={index}
                   onClick={() => onPageChange(page)}
                   className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                     currentPage === page
@@ -137,10 +126,7 @@ function Pagination({
                   {page}
                 </button>
               ) : (
-                <span
-                  key={index}
-                  className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
-                >
+                <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
                   ...
                 </span>
               );

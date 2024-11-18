@@ -84,7 +84,6 @@ function HomePage() {
               className="group relative overflow-hidden rounded-xl p-6 shadow-md transition-all duration-300 hover:-translate-y-3 hover:shadow-xl"
             >
               <div className="relative">
-                <div className="mb-4 flex justify-center"></div>
                 <h2 className="mb-4 text-center text-xl font-semibold capitalize text-gray-800">
                   {poki.name}
                 </h2>

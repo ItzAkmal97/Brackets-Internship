@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type UserDetails = {
   user: {
@@ -24,16 +24,12 @@ const userDetailsSlice = createSlice({
   name: "userDetails",
   initialState: initialUserDetailsState,
   reducers: {
-    handleUserDate(state, action) {
-     state.user.firstName = action.payload.firstName;
-     state.user.lastName = action.payload.lastName;
-     state.user.email = action.payload.email;
-     state.user.password = action.payload.password;
-     state.user.cpassword = action.payload.cpassword;
+    handleUserData(state, action: PayloadAction<UserDetails["user"]>) {
+      state.user = action.payload;
     },
   },
 });
 
-export const { handleUserDate } = userDetailsSlice.actions;
+export const { handleUserData } = userDetailsSlice.actions;
 
 export default userDetailsSlice.reducer;

@@ -1,25 +1,41 @@
-import { useDispatch, useSelector } from "react-redux";
-import { handleUserDate } from "../features/UserDetailsSlice";
-import { RootState } from "../store/store";
-function User() {
+import React, { FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleUserData } from '../features/UserDetailsSlice';
+import { RootState } from '../store/store';
+
+const User = () => {
   const user = useSelector((state: RootState) => state.userDetails.user);
   const dispatch = useDispatch();
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Add your form submission logic here
+    console.log('Form submitted:', user);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    dispatch(handleUserData({
+      ...user,
+      [name]: value
+    }));
+  };
+
   return (
     <div className="w-full max-w-md mx-auto p-6 mt-8">
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col space-y-2">
           <label htmlFor="firstName" className="text-gray-700 font-medium">
             First Name:
           </label>
           <input
-          onChange={(e) => dispatch(handleUserDate({
-            firstName: e.target.value
-          }))}
             type="text"
             id="firstName"
             name="firstName"
+            value={user.firstName}
+            onChange={handleInputChange}
             className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
           />
         </div>
 
@@ -31,7 +47,10 @@ function User() {
             type="text"
             id="lastName"
             name="lastName"
+            value={user.lastName}
+            onChange={handleInputChange}
             className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
           />
         </div>
 
@@ -43,7 +62,10 @@ function User() {
             type="email"
             id="email"
             name="email"
+            value={user.email}
+            onChange={handleInputChange}
             className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
           />
         </div>
 
@@ -55,22 +77,25 @@ function User() {
             type="password"
             id="password"
             name="password"
+            value={user.password}
+            onChange={handleInputChange}
             className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
           />
         </div>
 
         <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="confirmPassword"
-            className="text-gray-700 font-medium"
-          >
+          <label htmlFor="cpassword" className="text-gray-700 font-medium">
             Confirm Password:
           </label>
           <input
             type="password"
-            id="confirmPassword"
-            name="confirmPassword"
+            id="cpassword"
+            name="cpassword"
+            value={user.cpassword}
+            onChange={handleInputChange}
             className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            required
           />
         </div>
 
@@ -83,6 +108,6 @@ function User() {
       </form>
     </div>
   );
-}
+};
 
 export default User;

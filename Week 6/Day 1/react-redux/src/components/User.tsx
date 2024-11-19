@@ -9,7 +9,6 @@ const User = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your form submission logic here
     console.log('Form submitted:', user);
   };
 
